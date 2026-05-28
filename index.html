@@ -1,5 +1,1336 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Deployed!</title></head>
-<body style="font-family:system-ui;text-align:center;padding:4rem"><h1>GitHub Pages is live!</h1><p>Deployed via gh CLI</p></body>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pulse AI — AI-ассистент для VK и Telegram</title>
+  <meta name="description" content="AI-ассистент, который ищет, пишет, квалифицирует и ведёт клиентов в VK и Telegram. 24/7, без отпусков, без шаблонов." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;510;590&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ============ Design Tokens (Linear Dark SaaS) ============ */
+    :root {
+      --bg-deepest: #08090a;
+      --bg-panel: #0f1011;
+      --bg-surface: #191a1b;
+      --bg-hover: #28282c;
+
+      --text-primary: #f7f8f8;
+      --text-secondary: #d0d6e0;
+      --text-tertiary: #8a8f98;
+      --text-muted: #62666d;
+
+      --accent: #5e6ad2;
+      --accent-bright: #7170ff;
+      --accent-hover: #828fff;
+
+      --border-subtle: rgba(255, 255, 255, 0.05);
+      --border-default: rgba(255, 255, 255, 0.08);
+      --border-solid: #23252a;
+
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-pill: 9999px;
+
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 80px;
+    }
+
+    /* ============ Reset ============ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-feature-settings: "cv01", "ss03";
+      font-size: 16px;
+      line-height: 1.5;
+      background: var(--bg-deepest);
+      color: var(--text-secondary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    h1, h2, h3, h4, p, ul, ol { margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============ Buttons ============ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 510;
+      letter-spacing: -0.01em;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); }
+
+    .btn-lg { padding: 12px 20px; font-size: 15px; }
+
+    /* ============ Navbar ============ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(15, 16, 17, 0.72);
+      backdrop-filter: saturate(140%) blur(12px);
+      -webkit-backdrop-filter: saturate(140%) blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-primary);
+      font-weight: 590;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .nav-logo svg { width: 22px; height: 22px; }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 510;
+      color: var(--text-secondary);
+      letter-spacing: -0.005em;
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+
+    .nav-burger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+    }
+    .nav-burger svg { width: 16px; height: 16px; }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+      .nav-burger { display: none; }
+    }
+
+    /* Mobile menu overlay */
+    .nav-mobile {
+      position: fixed;
+      inset: 64px 0 0 0;
+      background: var(--bg-deepest);
+      z-index: 99;
+      padding: 32px 24px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 18px;
+      font-weight: 510;
+      color: var(--text-primary);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* ============ Hero ============ */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(96px, 12vw, 160px) 0 clamp(48px, 8vw, 80px);
+      text-align: center;
+      background: var(--bg-deepest);
+    }
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120%;
+      height: 100%;
+      background: radial-gradient(
+        ellipse 60% 50% at 50% 30%,
+        rgba(94, 106, 210, 0.18) 0%,
+        rgba(113, 112, 255, 0.08) 30%,
+        transparent 70%
+      );
+    }
+    .hero-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+      -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 30%, black, transparent);
+      mask-image: radial-gradient(ellipse 60% 60% at 50% 30%, black, transparent);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 510;
+      letter-spacing: 0;
+      color: var(--text-tertiary);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      box-shadow: 0 0 12px var(--accent-bright);
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 64px);
+      line-height: 1.05;
+      font-weight: 510;
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    .hero h1 .accent { color: var(--accent-bright); }
+
+    .hero p.lede {
+      font-size: clamp(16px, 2vw, 18px);
+      line-height: 1.55;
+      color: var(--text-tertiary);
+      max-width: 580px;
+      margin: 0 auto 32px;
+      letter-spacing: -0.005em;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-trust {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: -0.005em;
+    }
+
+    /* ============ Section base ============ */
+    section.block {
+      padding: clamp(48px, 8vw, 80px) 0;
+      position: relative;
+    }
+    .block-panel { background: var(--bg-panel); }
+
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 510;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 510;
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+    .section-lede {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-tertiary);
+      max-width: 640px;
+      margin-bottom: 40px;
+    }
+
+    /* ============ Pain block ============ */
+    .pain-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 720px;
+    }
+    .pain-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .pain-item .x {
+      flex: 0 0 18px;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      border-radius: 50%;
+      background: rgba(255, 90, 90, 0.12);
+      color: #ff8a8a;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 590;
+    }
+
+    /* ============ Features grid ============ */
+    .features {
+      display: grid;
+      gap: 1px;
+      background: var(--border-default);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .features { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .features { grid-template-columns: repeat(3, 1fr); } }
+
+    .feature {
+      background: var(--bg-deepest);
+      padding: 28px;
+      transition: background 0.2s ease;
+    }
+    .feature:hover { background: rgba(255, 255, 255, 0.02); }
+    .feature .icon {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      background: rgba(94, 106, 210, 0.12);
+      color: var(--accent-bright);
+      margin-bottom: 18px;
+    }
+    .feature .icon svg { width: 18px; height: 18px; }
+    .feature h3 {
+      font-size: 18px;
+      font-weight: 590;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .feature p {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text-tertiary);
+    }
+
+    /* ============ How it works (steps) ============ */
+    .steps {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+    .step {
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+    .step .num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-bright);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .step h3 {
+      font-size: 16px;
+      font-weight: 590;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .step p {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-tertiary);
+    }
+    .steps-footer {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .steps-footer b { color: var(--text-secondary); font-weight: 500; }
+
+    /* ============ Capabilities (list) ============ */
+    .caps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 820px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    @media (min-width: 768px) { .caps { grid-template-columns: 1fr 1fr; gap: 0 32px; } }
+    .cap {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .cap .ico {
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      color: var(--accent-bright);
+      margin-top: 2px;
+    }
+    .cap h4 {
+      font-size: 15px;
+      font-weight: 590;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+    .cap p {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+    }
+
+    /* ============ Pricing ============ */
+    .pricing {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) { .pricing { grid-template-columns: repeat(3, 1fr); } }
+    .plan {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+    .plan.featured {
+      border-color: rgba(94, 106, 210, 0.45);
+      box-shadow: 0 0 0 1px rgba(94, 106, 210, 0.15), 0 8px 40px rgba(94, 106, 210, 0.12);
+    }
+    .plan .badge {
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      font-size: 11px;
+      font-weight: 510;
+      padding: 4px 10px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.02em;
+    }
+    .plan h3 {
+      font-size: 18px;
+      font-weight: 590;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+    .plan .price {
+      font-size: 28px;
+      font-weight: 510;
+      color: var(--text-primary);
+      letter-spacing: -0.022em;
+    }
+    .plan .price .per {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+    .plan ul.bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 8px 0 0;
+    }
+    .plan ul.bullets li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      line-height: 1.45;
+    }
+    .plan ul.bullets li::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      background: rgba(94, 106, 210, 0.18);
+      color: var(--accent-bright);
+      border-radius: 50%;
+      flex: 0 0 14px;
+      margin-top: 4px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path fill='none' stroke='%237170ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 7.5 5.8 10 11 4.5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .plan .btn { margin-top: 8px; }
+    .pricing-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ============ Social proof ============ */
+    .quotes {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) { .quotes { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .quotes { grid-template-columns: repeat(3, 1fr); } }
+    .quote {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .quote p {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .quote .who { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5e6ad2, #7170ff);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 590;
+    }
+    .who-meta .name {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 510;
+      line-height: 1.2;
+    }
+    .who-meta .role { font-size: 12px; color: var(--text-muted); }
+
+    .metrics {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 40px;
+    }
+    @media (min-width: 640px) { .metrics { grid-template-columns: repeat(4, 1fr); } }
+    .metric {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: left;
+    }
+    .metric .num {
+      font-size: 28px;
+      font-weight: 510;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .metric .lbl {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============ CTA section ============ */
+    .cta-section {
+      text-align: center;
+      padding: clamp(64px, 10vw, 120px) 0;
+      background: var(--bg-deepest);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 50% 80% at 50% 50%,
+        rgba(94, 106, 210, 0.15),
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+    .cta-section .container { position: relative; }
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 510;
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-section p {
+      font-size: 16px;
+      color: var(--text-tertiary);
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.55;
+    }
+    .cta-glow {
+      box-shadow: 0 0 40px rgba(94, 106, 210, 0.35), 0 0 0 1px rgba(94, 106, 210, 0.4);
+    }
+
+    /* ============ Footer ============ */
+    footer {
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border-subtle);
+      padding: 48px 0 28px;
+      color: var(--text-tertiary);
+    }
+    .footer-grid {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+    .footer-brand {
+      color: var(--text-secondary);
+    }
+    .footer-brand .nav-logo { color: var(--text-primary); }
+    .footer-brand p {
+      margin-top: 12px;
+      font-size: 13px;
+      max-width: 280px;
+      line-height: 1.55;
+      color: var(--text-tertiary);
+    }
+    .footer-col h4 {
+      font-size: 12px;
+      font-weight: 510;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      transition: color 0.15s ease;
+    }
+    .footer-col a:hover { color: var(--text-primary); }
+
+    .copyright {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ============ Demo / Product visual ============ */
+    .demo {
+      margin: 0 auto;
+      max-width: 980px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      background: var(--bg-surface);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 80px -20px rgba(94, 106, 210, 0.18);
+      overflow: hidden;
+    }
+    .demo-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-default);
+      background: var(--bg-panel);
+    }
+    .demo-bar .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2a2c31;
+    }
+    .demo-bar .title {
+      margin-left: auto;
+      margin-right: auto;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .demo-body {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 380px;
+    }
+    @media (min-width: 768px) {
+      .demo-body { grid-template-columns: 240px 1fr; }
+    }
+    .demo-side {
+      border-right: 1px solid var(--border-default);
+      padding: 16px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    @media (min-width: 768px) { .demo-side { display: flex; } }
+    .demo-side .lead {
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: default;
+    }
+    .demo-side .lead.active { background: rgba(94, 106, 210, 0.12); color: var(--text-primary); }
+    .demo-side .lead .av {
+      width: 24px; height: 24px; border-radius: 50%; flex: 0 0 24px;
+      background: linear-gradient(135deg, #5e6ad2, #7170ff);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 590; color: #fff;
+    }
+    .demo-side .lead .meta { display: flex; flex-direction: column; line-height: 1.2; }
+    .demo-side .lead .meta .nm { font-size: 13px; }
+    .demo-side .lead .meta .sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    .demo-chat {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .msg.in {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+    .msg.out {
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+    .msg.sys {
+      align-self: center;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(94, 106, 210, 0.15);
+      color: var(--accent-bright);
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+      align-self: center;
+    }
+    .tag .pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-bright);
+      box-shadow: 0 0 8px var(--accent-bright);
+    }
+
+    /* ============ Util ============ */
+    .grid-2 {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 960px) { .grid-2 { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+    /* ============ Accessibility ============ */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent-bright);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- ============ Navbar ============ -->
+  <nav class="nav" aria-label="Главная навигация">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo" aria-label="Pulse AI на главную">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="24" y2="24">
+              <stop offset="0%" stop-color="#7170ff" />
+              <stop offset="100%" stop-color="#5e6ad2" />
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#lg)" />
+          <path d="M7 12.5 L10 15.5 L17 8.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        </svg>
+        Pulse&nbsp;AI
+      </a>
+
+      <div class="nav-links" role="menubar">
+        <a href="#features" role="menuitem">Возможности</a>
+        <a href="#how" role="menuitem">Как работает</a>
+        <a href="#pricing" role="menuitem">Тарифы</a>
+        <a href="#faq" role="menuitem">FAQ</a>
+      </div>
+
+      <div class="nav-cta">
+        <a href="#pricing" class="btn btn-primary">Запустить бесплатно</a>
+        <button class="nav-burger" id="burger" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M2 4h12M2 8h12M2 12h12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="nav-mobile container" role="menu">
+      <a href="#features" role="menuitem">Возможности</a>
+      <a href="#how" role="menuitem">Как работает</a>
+      <a href="#pricing" role="menuitem">Тарифы</a>
+      <a href="#faq" role="menuitem">FAQ</a>
+      <a href="#pricing" class="btn btn-primary btn-lg" style="margin-top: 16px; align-self: flex-start;">Запустить бесплатно</a>
+    </div>
+  </nav>
+
+  <!-- ============ Hero ============ -->
+  <header class="hero">
+    <div class="hero-visual" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <span class="hero-eyebrow"><span class="dot"></span>AI работает 24/7 — пока вы спите</span>
+      <h1>
+        AI-ассистент, который ведёт клиентов <br />
+        в <span class="accent">VK</span> и <span class="accent">Telegram</span> — вместо вас
+      </h1>
+      <p class="lede">
+        Автоматическое приветствие, квалификация лидов и продажи через диалог.
+        Подключаете аккаунт — получаете клиентов.
+      </p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn-primary btn-lg">Запустить бесплатно на 7 дней</a>
+        <a href="#how" class="btn btn-ghost btn-lg">Как это работает</a>
+      </div>
+      <div class="hero-trust">Без карты · Настройка от 1 дня · Отмена в один клик</div>
+    </div>
+  </header>
+
+  <!-- ============ Demo / Product visual ============ -->
+  <section class="block" aria-label="Демо продукта">
+    <div class="container">
+      <div class="demo" role="img" aria-label="Превью интерфейса Pulse AI: диалог с клиентом и панель квалифицированных лидов">
+        <div class="demo-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="title">pulse-ai.app — Inbox</span>
+        </div>
+        <div class="demo-body">
+          <aside class="demo-side" aria-label="Список лидов">
+            <div class="lead active">
+              <div class="av">МА</div>
+              <div class="meta"><span class="nm">Михаил А.</span><span class="sub">VK · 2 мин назад</span></div>
+            </div>
+            <div class="lead">
+              <div class="av" style="background: linear-gradient(135deg,#ff8a8a,#ffb27a)">ЕС</div>
+              <div class="meta"><span class="nm">Елена С.</span><span class="sub">Telegram · 14 мин</span></div>
+            </div>
+            <div class="lead">
+              <div class="av" style="background: linear-gradient(135deg,#7fdfa5,#5fb88e)">ДК</div>
+              <div class="meta"><span class="nm">Денис К.</span><span class="sub">VK · 1 ч</span></div>
+            </div>
+            <div class="lead">
+              <div class="av" style="background: linear-gradient(135deg,#ffd57a,#e0a449)">АП</div>
+              <div class="meta"><span class="nm">Анна П.</span><span class="sub">VK · 3 ч</span></div>
+            </div>
+          </aside>
+          <div class="demo-chat">
+            <div class="tag"><span class="pulse"></span>Лид квалифицирован · бюджет ✓</div>
+            <div class="msg in">Здравствуйте! Видел вашу группу — хочу узнать про услугу</div>
+            <div class="msg out">Привет, Михаил 👋 Расскажите, для какой задачи присматриваетесь? Возьму на себя весь подбор</div>
+            <div class="msg in">Нужен запуск для нового продукта. Сроки — 2 недели</div>
+            <div class="msg out">Понял. Бюджет, в который попадаем — стандартный (до 200к) или премиум? Подберу 2 варианта</div>
+            <div class="msg in">200к ок. Что нужно от меня?</div>
+            <div class="msg sys">AI передал лид менеджеру · контекст диалога сохранён</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Pain ============ -->
+  <section class="block" id="pain">
+    <div class="container">
+      <div class="section-eyebrow">Проблема</div>
+      <h2 class="section-title">Знакомо?</h2>
+      <p class="section-lede">Если хотя бы три пункта про вас — Pulse AI окупится в первую неделю.</p>
+      <ul class="pain-list">
+        <li class="pain-item"><span class="x">×</span>100+ входящих заявок в VK, а отвечаете вручную</li>
+        <li class="pain-item"><span class="x">×</span>Заявки «остывают», пока менеджер обедает</li>
+        <li class="pain-item"><span class="x">×</span>Один и тот же скрипт для холодных и горячих лидов</li>
+        <li class="pain-item"><span class="x">×</span>Нет системы — кто заинтересован, а кто просто спросил цену</li>
+        <li class="pain-item"><span class="x">×</span>Telegram-бот отвечает шаблонами, клиент чувствует робота и уходит</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Features ============ -->
+  <section class="block" id="features">
+    <div class="container">
+      <div class="section-eyebrow">Что делает система</div>
+      <h2 class="section-title">Вот что берёт на себя AI</h2>
+      <p class="section-lede">Не «бот». Полноценный ассистент с памятью, контекстом и стратегией продаж.</p>
+
+      <div class="features">
+        <article class="feature">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <h3>Поиск ЦА в VK</h3>
+          <p>Заходит в группы по вашей теме, отбирает целевых пользователей по поведению и интересам.</p>
+        </article>
+
+        <article class="feature">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.3-4.8A8.5 8.5 0 1 1 21 11.5z"/></svg>
+          </span>
+          <h3>Живой диалог</h3>
+          <p>Пишет первым, поддерживает разговор по SPIN-методике, ведёт клиента к покупке.</p>
+        </article>
+
+        <article class="feature">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+          </span>
+          <h3>Квалификация</h3>
+          <p>Выясняет бюджет, потребность, сроки. Передаёт менеджеру только «горячих» с контекстом.</p>
+        </article>
+
+        <article class="feature">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>
+          <h3>24/7 без перерывов</h3>
+          <p>Отвечает за 30 секунд в любое время. Ни одного потерянного лида ночью и в выходные.</p>
+        </article>
+
+        <article class="feature">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+          </span>
+          <h3>Telegram-ассистент</h3>
+          <p>Не шаблонный FAQ-бот, а контекстный собеседник: помнит историю, ведёт к нужной воронке.</p>
+        </article>
+
+        <article class="feature">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <h3>Без банов</h3>
+          <p>Гвардрейлы и человеческий ритм сообщений. Не спамит, не нарушает правила платформ.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ How it works ============ -->
+  <section class="block block-panel" id="how">
+    <div class="container">
+      <div class="section-eyebrow">Процесс</div>
+      <h2 class="section-title">4 шага до первых клиентов</h2>
+      <p class="section-lede">От регистрации до первого квалифицированного лида — меньше суток.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">01</div>
+          <h3>Подключение</h3>
+          <p>Заводите аккаунт, передаёте VK-токен или подключаете Telegram-бота. 5 минут.</p>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h3>Настройка</h3>
+          <p>Ниша, скрипт продаж, портрет клиента, тон голоса, граничные сценарии.</p>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h3>AI работает</h3>
+          <p>Ищет ЦА, пишет первым, ведёт диалог, квалифицирует — всё в одном окне.</p>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <h3>Готовые лиды</h3>
+          <p>Получаете «горячих» с контекстом диалога: бюджет, потребность, сроки, возражения.</p>
+        </div>
+      </div>
+
+      <div class="steps-footer">Время запуска: <b>от 1 дня</b> · Интеграции: Bitrix24, AmoCRM, Google Sheets, Webhooks</div>
+    </div>
+  </section>
+
+  <!-- ============ Capabilities ============ -->
+  <section class="block" id="capabilities">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <div class="section-eyebrow">Внутри коробки</div>
+          <h2 class="section-title">Что умеет ассистент «под капотом»</h2>
+          <p class="section-lede">Не магия, а архитектура: интент-классификация, маршрутизация, контекстная память и контроль качества.</p>
+        </div>
+        <ul class="caps">
+          <li class="cap">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <div>
+              <h4>Мульти-персона</h4>
+              <p>Разные аккаунты, разные голоса, разные сценарии под каждую нишу.</p>
+            </div>
+          </li>
+          <li class="cap">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h6"/></svg>
+            <div>
+              <h4>Интент-роутинг</h4>
+              <p>AI определяет, что хочет клиент, и ведёт нужным путём — продажа, поддержка, прогрев.</p>
+            </div>
+          </li>
+          <li class="cap">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div>
+              <h4>Гвардрейлы</h4>
+              <p>Не пишет ерунду, не уходит в сторону, не нарушает правила площадок.</p>
+            </div>
+          </li>
+          <li class="cap">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg>
+            <div>
+              <h4>QA-контроль</h4>
+              <p>Логи каждого диалога, статистика конверсий по этапам, A/B на сценарии.</p>
+            </div>
+          </li>
+          <li class="cap">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15 1.65 1.65 0 0 0 3.09 14H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.36.15.66.4.89.71"/></svg>
+            <div>
+              <h4>Интеграции</h4>
+              <p>CRM, Google Sheets, Webhooks, ваш бот — данные о лидах летят туда, где удобно.</p>
+            </div>
+          </li>
+          <li class="cap">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17 12 22l10-5"/><path d="M2 12 12 17l10-5"/></svg>
+            <div>
+              <h4>Контекстная память</h4>
+              <p>Помнит каждый предыдущий диалог: возражения, преференции, обещания.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Pricing ============ -->
+  <section class="block block-panel" id="pricing">
+    <div class="container">
+      <div class="section-eyebrow">Тарифы</div>
+      <h2 class="section-title">Простая помесячная оплата</h2>
+      <p class="section-lede">7 дней бесплатно. Без карты на старте. Отмена в один клик.</p>
+
+      <div class="pricing">
+        <div class="plan">
+          <h3>Старт</h3>
+          <div class="price">4 900 ₽<span class="per">/ мес</span></div>
+          <p style="color: var(--text-tertiary); font-size: 14px;">Для одного направления и пробы пера.</p>
+          <ul class="bullets">
+            <li>1 аккаунт VK</li>
+            <li>Базовые сценарии диалога</li>
+            <li>До 500 лидов в месяц</li>
+            <li>Поддержка по почте</li>
+            <li>Экспорт в CSV</li>
+          </ul>
+          <a href="#" class="btn btn-ghost">Попробовать бесплатно</a>
+        </div>
+
+        <div class="plan featured">
+          <span class="badge">Популярно</span>
+          <h3>Рост</h3>
+          <div class="price">14 900 ₽<span class="per">/ мес</span></div>
+          <p style="color: var(--text-tertiary); font-size: 14px;">Под отдел продаж и системные продажи.</p>
+          <ul class="bullets">
+            <li>3 аккаунта VK + Telegram-бот</li>
+            <li>Кастомные сценарии</li>
+            <li>До 2 000 лидов в месяц</li>
+            <li>Интеграции CRM</li>
+            <li>Приоритетная поддержка</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Попробовать бесплатно</a>
+        </div>
+
+        <div class="plan">
+          <h3>Максимум</h3>
+          <div class="price">от 39 900 ₽<span class="per">/ мес</span></div>
+          <p style="color: var(--text-tertiary); font-size: 14px;">Для агентств и масштабных проектов.</p>
+          <ul class="bullets">
+            <li>Безлимит аккаунтов</li>
+            <li>Выделенный менеджер</li>
+            <li>API и webhooks</li>
+            <li>Любые интеграции</li>
+            <li>SLA 99.9%</li>
+          </ul>
+          <a href="#" class="btn btn-ghost">Связаться</a>
+        </div>
+      </div>
+
+      <p class="pricing-note">Все тарифы — <b style="color:var(--text-secondary)">7 дней бесплатно</b>, без карты.</p>
+    </div>
+  </section>
+
+  <!-- ============ Social proof ============ -->
+  <section class="block" id="cases">
+    <div class="container">
+      <div class="section-eyebrow">Социальное подтверждение</div>
+      <h2 class="section-title">Уже работают с системой</h2>
+      <p class="section-lede">Команды из e-commerce, услуг, образования и B2B — те, кто закрыл проблему лидогенерации.</p>
+
+      <div class="quotes">
+        <div class="quote">
+          <p>«Раньше отвечали за 3 часа, сейчас — за 30 секунд. Конверсия из заявки в продажу выросла в 2,4 раза за первый месяц».</p>
+          <div class="who">
+            <div class="avatar">ИК</div>
+            <div class="who-meta"><div class="name">Ирина К.</div><div class="role">Head of Sales, онлайн-школа</div></div>
+          </div>
+        </div>
+        <div class="quote">
+          <p>«Подключили за день. AI перестал быть страшилкой — клиенты не понимают, что им пишет не человек. Это и хорошо, и страшно».</p>
+          <div class="who">
+            <div class="avatar" style="background: linear-gradient(135deg,#7fdfa5,#5fb88e)">СГ</div>
+            <div class="who-meta"><div class="name">Сергей Г.</div><div class="role">Founder, агентство недвижимости</div></div>
+          </div>
+        </div>
+        <div class="quote">
+          <p>«У нас 4 ниши и 6 аккаунтов. До Pulse AI это были 6 разных миров. Теперь — единая воронка с прогнозируемой выручкой».</p>
+          <div class="who">
+            <div class="avatar" style="background: linear-gradient(135deg,#ffd57a,#e0a449)">АМ</div>
+            <div class="who-meta"><div class="name">Антон М.</div><div class="role">CMO, EdTech-стартап</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics" aria-label="Ключевые метрики платформы">
+        <div class="metric"><div class="num">2.4×</div><div class="lbl">средний рост конверсии</div></div>
+        <div class="metric"><div class="num">30&nbsp;сек</div><div class="lbl">медианное время ответа</div></div>
+        <div class="metric"><div class="num">240k+</div><div class="lbl">лидов обработано за месяц</div></div>
+        <div class="metric"><div class="num">99.9%</div><div class="lbl">uptime платформы</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="block block-panel" id="faq">
+    <div class="container">
+      <div class="section-eyebrow">FAQ</div>
+      <h2 class="section-title">Частые вопросы</h2>
+      <div class="caps" style="grid-template-columns: 1fr; max-width: 820px;">
+        <details class="cap" style="display:block; padding: 18px 0;">
+          <summary style="font-size:15px; color:var(--text-primary); font-weight:510; cursor:pointer; list-style: none;">Не забанит ли VK мой аккаунт?</summary>
+          <p style="margin-top:10px; color: var(--text-tertiary); font-size:14px;">Нет, если соблюдать правила платформы. Pulse AI имитирует человеческий ритм, использует прогретые аккаунты, ограничивает частоту сообщений и не делает массовых рассылок.</p>
+        </details>
+        <details class="cap" style="display:block; padding: 18px 0;">
+          <summary style="font-size:15px; color:var(--text-primary); font-weight:510; cursor:pointer; list-style: none;">Как быстро запустимся?</summary>
+          <p style="margin-top:10px; color: var(--text-tertiary); font-size:14px;">От 1 дня. Нужно: VK-токен или Telegram-бот, описание ниши, скрипт продаж (или мы поможем составить), портрет клиента.</p>
+        </details>
+        <details class="cap" style="display:block; padding: 18px 0;">
+          <summary style="font-size:15px; color:var(--text-primary); font-weight:510; cursor:pointer; list-style: none;">Можно интегрировать с моей CRM?</summary>
+          <p style="margin-top:10px; color: var(--text-tertiary); font-size:14px;">Да. Из коробки — Bitrix24, AmoCRM, Google Sheets. Через webhooks — практически любая система.</p>
+        </details>
+        <details class="cap" style="display:block; padding: 18px 0;">
+          <summary style="font-size:15px; color:var(--text-primary); font-weight:510; cursor:pointer; list-style: none;">А если AI ошибётся?</summary>
+          <p style="margin-top:10px; color: var(--text-tertiary); font-size:14px;">У вас всегда есть «живой» режим: подключаетесь к любому диалогу, перехватываете и продолжаете сами. Каждый диалог логируется — ничего не теряется.</p>
+        </details>
+        <details class="cap" style="display:block; padding: 18px 0;">
+          <summary style="font-size:15px; color:var(--text-primary); font-weight:510; cursor:pointer; list-style: none;">Сколько данных нужно для настройки?</summary>
+          <p style="margin-top:10px; color: var(--text-tertiary); font-size:14px;">Минимум — описание продукта, 5–10 типовых возражений и желаемая логика квалификации. Шаблоны есть готовые под популярные ниши.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Final CTA ============ -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Начните получать клиентов автоматически</h2>
+      <p>7 дней бесплатно, без карты. Подключение за 5 минут. Первый квалифицированный лид — в течение суток.</p>
+      <a href="#" class="btn btn-primary btn-lg cta-glow">Запустить бесплатно</a>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" aria-label="Pulse AI на главную">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#lg)" />
+              <path d="M7 12.5 L10 15.5 L17 8.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            </svg>
+            Pulse&nbsp;AI
+          </a>
+          <p>AI-ассистент, который ведёт клиентов в VK и Telegram. Pulse сам ищет, пишет, квалифицирует и передаёт горячие лиды.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Продукт</h4>
+          <ul>
+            <li><a href="#features">Возможности</a></li>
+            <li><a href="#how">Как работает</a></li>
+            <li><a href="#pricing">Тарифы</a></li>
+            <li><a href="#cases">Кейсы</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Компания</h4>
+          <ul>
+            <li><a href="#">О нас</a></li>
+            <li><a href="#">Блог</a></li>
+            <li><a href="#">Контакты</a></li>
+            <li><a href="#">Партнёрам</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Документы</h4>
+          <ul>
+            <li><a href="#">Договор-оферта</a></li>
+            <li><a href="#">Политика</a></li>
+            <li><a href="#">Безопасность</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <span>© 2026 Pulse AI · Все права защищены</span>
+        <span>Сделано с заботой о ваших клиентах</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    (function () {
+      var btn = document.getElementById('burger');
+      var menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+      function close() { menu.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+      btn.addEventListener('click', function () {
+        var open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+    })();
+  </script>
+</body>
 </html>
